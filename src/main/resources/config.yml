@@ -1,0 +1,9 @@
+servers:
+  one-seven:
+  - 4
+  - 5
+  one-eight:
+  - 44
+  - 45
+  - 46
+ping-passthrough: true

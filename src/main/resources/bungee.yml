@@ -1,0 +1,4 @@
+name: VanillaPod
+main: nz.co.noirland.vanillapod.VanillaPod
+version: ${project.version}
+author: ZephireNZ
