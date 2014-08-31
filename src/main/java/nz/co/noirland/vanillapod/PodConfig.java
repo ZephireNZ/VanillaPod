@@ -5,6 +5,7 @@ import net.md_5.bungee.config.ConfigurationProvider;
 import net.md_5.bungee.config.YamlConfiguration;
 
 import java.io.*;
+import java.util.Collection;
 import java.util.logging.Logger;
 
 public class PodConfig {
@@ -46,6 +47,14 @@ public class PodConfig {
             }
         }
         return null;
+    }
+
+    public Collection<String> getServers() {
+        return config.getSection("servers").getKeys();
+    }
+
+    public long getPingCacheDelay() {
+        return config.getLong("ping-cache-delay", 5000);
     }
 
     /**

@@ -6,4 +6,5 @@ servers:
   - 44
   - 45
   - 46
-ping-passthrough: true
+ping-passthrough: true # Whether to passthrough pings
+ping-cache-delay: 5000 # Delay in milliseconds to cache pings
