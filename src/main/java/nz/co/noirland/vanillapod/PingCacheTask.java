@@ -30,7 +30,8 @@ class PingCacheTask implements Runnable {
     public void run() {
         server.ping(new Callback<ServerPing>() {
             @Override
-            public void done(ServerPing result, Throwable error) {
+            public void done(ServerPing result, Throwable e) {
+                if(e != null) return;
                 VanillaPod.inst().setPing(server, result);
             }
         });
