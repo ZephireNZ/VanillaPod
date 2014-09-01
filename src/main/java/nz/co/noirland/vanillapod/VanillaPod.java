@@ -9,14 +9,18 @@ import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.event.EventHandler;
 
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class VanillaPod extends Plugin implements Listener {
 
     private static VanillaPod inst;
 
-    private Map<ServerInfo, ServerPing> cachedPings = new ConcurrentHashMap<>();
+    private Map<ServerInfo, ServerPing> cachedPings = new ConcurrentHashMap<>(); // Cached server pings
+    private Set<ServerInfo> protoServers; // All the servers that need to be cached
 
     public static VanillaPod inst() {
         return inst;
@@ -30,9 +34,15 @@ public class VanillaPod extends Plugin implements Listener {
         getProxy().setReconnectHandler(new ProtocolReconnectManager());
         getProxy().getPluginManager().registerListener(this, this);
 
+        HashSet<ServerInfo> servers = new HashSet<>();
         for(String server : PodConfig.inst().getServers()) {
             ServerInfo info = getProxy().getServerInfo(server);
-            PingCacheTask.get(info).runTimer(PodConfig.inst().getPingCacheDelay());
+            servers.add(info);
+        }
+        protoServers = Collections.unmodifiableSet(servers);
+
+        for(ServerInfo server : protoServers) {
+            PingCacheTask.get(server).runTimer(PodConfig.inst().getPingCacheDelay());
         }
     }
 
@@ -55,7 +65,7 @@ public class VanillaPod extends Plugin implements Listener {
     @EventHandler
     public void onDisconnect(ServerDisconnectEvent event) {
         ServerInfo left = event.getTarget();
-        if(!cachedPings.containsKey(left)) return;
+        if(!protoServers.contains(left)) return;
 
         PingCacheTask.get(left).runNow();
     }
@@ -66,7 +76,7 @@ public class VanillaPod extends Plugin implements Listener {
     @EventHandler
     public void onConnect(ServerConnectEvent event) {
         ServerInfo joined = event.getTarget();
-        if(!cachedPings.containsKey(joined)) return;
+        if(!protoServers.contains(joined)) return;
 
         PingCacheTask.get(joined).runNow();
     }
