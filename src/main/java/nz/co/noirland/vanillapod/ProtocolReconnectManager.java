@@ -15,7 +15,10 @@ public class ProtocolReconnectManager implements ReconnectHandler {
     public ServerInfo getServer(ProxiedPlayer player) {
         int protocol = player.getPendingConnection().getVersion();
         ServerInfo info = VanillaPod.inst().getServer(protocol);
-        if(info == null) return null;
+        if(info == null) {
+            VanillaPod.inst().getLogger().warning("Unable to find server to send protocol " + protocol + "!");
+            return null;
+        }
         return info;
     }
 
