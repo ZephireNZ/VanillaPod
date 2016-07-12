@@ -2,10 +2,6 @@ servers:
   one-seven:
   - 4 # 1.7 - 1.7.4
   - 5 # 1.7.5 1.7.10
-  one-eight:
-  - 44 # 1.8-pre1
-  - 45 # 1.8-pre2
-  - 46 # 1.8-pre3
-  - 47 # 1.8
 ping-passthrough: true # Whether to passthrough pings
 ping-cache-delay: 5000 # Delay in milliseconds to cache pings
+default: one-eight

@@ -46,7 +46,7 @@ public class PodConfig {
                 }
             }
         }
-        return null;
+        return config.getString("default");
     }
 
     public Collection<String> getServers() {
